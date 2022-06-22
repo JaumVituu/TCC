@@ -8,7 +8,7 @@ public class Character1 : MonoBehaviour
     public Camera currentCamera;
     void Start()
     {
-        
+             
     }
 
     // Update is called once per frame
@@ -16,4 +16,6 @@ public class Character1 : MonoBehaviour
     {
         Char1.Movimenta(gameObject,currentCamera);
     }
+
+    
 }

@@ -8,12 +8,14 @@ public class Jogador
     float velocidade;
     public string name;
     float MouseY, MouseX;
+    Camera camera;
 
     public Jogador(string objectName){
         name = objectName;
     }
     
     public void Movimenta(GameObject player, Camera playerCam){
+        camera = playerCam;
         Cursor.lockState = CursorLockMode.Locked;
         if(Input.GetKey(KeyCode.W)){
             velocidade = 7.5f;
