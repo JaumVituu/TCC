@@ -15,6 +15,7 @@ public class Jogador
     }
     
     public void Movimenta(GameObject player, Camera playerCam){
+        Rigidbody rb = player.GetComponent<Rigidbody>();
         camera = playerCam;
         Cursor.lockState = CursorLockMode.Locked;
         if(Input.GetKey(KeyCode.W)){
