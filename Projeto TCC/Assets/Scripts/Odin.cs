@@ -9,26 +9,49 @@ public class Odin : MonoBehaviour
     public GameObject Corvo;
     public bool segurandoCorvo;
     public bool corvoUsado;
+    GameObject habilidadeCorvo;
+    Transform cameraCorvo;
+    float tempoVoo;
+    float recargaCorvo;
+    Quaternion rotacaoCorvo;
 
     void Start()
     {
         segurandoCorvo = false;
-        corvoUsado = false;           
+        corvoUsado = false;    
+        tempoVoo = 3f;
+        recargaCorvo = 30f;       
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        Personagem.Movimenta(gameObject,currentCamera);
+        
+        if(currentCamera.GetComponent<Camera>().enabled == true){
+            Personagem.Movimenta(gameObject,currentCamera);
+        }
         UsarCorvo();      
     }
 
     void UsarCorvo(){
-        float recarcaCorvo;
-        float tempoVoo = 3f;
-        GameObject habilidadeCorvo;
-        Camera cameraCorvo;
-
+        rotacaoCorvo = Quaternion.Euler(currentCamera.transform.rotation.x, transform.rotation.y, 0f);
+        //rotacaoCorvo = Quaternion.Euler(150,50,0);
+        if (corvoUsado){            
+            if(tempoVoo >= 0f){
+                //habilidadeCorvo.transform.Translate(habilidadeCorvo.transform.forward*Time.deltaTime);
+                cameraCorvo = habilidadeCorvo.transform.GetChild(0);
+                cameraCorvo.GetComponent<Camera>().enabled = false;
+                tempoVoo -= Time.deltaTime;
+            }
+            else{
+                Debug.Log("Acabou voo");
+                if(Input.GetKeyDown(KeyCode.E)){
+                    cameraCorvo.GetComponent<Camera>().enabled = !cameraCorvo.GetComponent<Camera>().enabled;
+                    currentCamera.GetComponent<Camera>().enabled = !currentCamera.GetComponent<Camera>().enabled;
+                    recargaCorvo -= Time.deltaTime;
+                }                
+            }
+        }
         if(corvoUsado == false){
             if(segurandoCorvo == false){
                 if(Input.GetKeyDown(KeyCode.E)){
@@ -42,7 +65,8 @@ public class Odin : MonoBehaviour
                     Debug.Log("soltou corvo");
                 }
                 if(Input.GetMouseButtonDown(0)){
-                    habilidadeCorvo = Instantiate(Corvo, transform.position + new Vector3(1,0,0), transform.rotation);
+                    habilidadeCorvo = Instantiate(Corvo, transform.position + new Vector3(1,1,0),Quaternion.identity*rotacaoCorvo);
+                    Debug.Log((Quaternion)currentCamera.transform.rotation.x + "," + transform.rotation.y);
                     corvoUsado = true;
             	}             
             } 
